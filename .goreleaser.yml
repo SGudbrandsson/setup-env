@@ -36,7 +36,7 @@ builds:
     main: ./main.go
     binary: setup-env-linux-musl
     env:
-      - CGO_ENABLED=0
+      - CGO_ENABLED=1
       - CC=musl-gcc
     goos:
       - linux
