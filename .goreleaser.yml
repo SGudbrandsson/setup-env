@@ -1,0 +1,77 @@
+version: 2
+# .goreleaser.yml
+# Visit https://goreleaser.com/customization/ for more options
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+    # you may remove this if you don't need go generate
+    # - go generate ./... # Removed for simplicity, add back if needed
+builds:
+  - main: ./main.go
+    binary: setup-env
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    goarm: # Only relevant for arm
+      - "7" # For linux/arm, for example Raspberry Pi
+    ignore:
+      # Darwin arm64 is the default for darwin/arm64
+      # Windows arm64 is the default for windows/arm64
+      # Linux arm64 is the default for linux/arm64
+      # For linux/arm, we specified goarm: "7"
+      # Exclude linux/arm if not needed, or adjust goarm
+      - goos: darwin
+        goarch: arm # M1 is arm64
+      - goos: windows
+        goarch: arm # Windows on ARM is arm64
+    # Custom build for linux/musl
+  - id: setup-env-linux-musl
+    main: ./main.go
+    binary: setup-env-linux-musl
+    env:
+      - CGO_ENABLED=0
+      - CC=musl-gcc
+    goos:
+      - linux
+    goarch:
+      - amd64
+    tags:
+      - musl
+    ldflags:
+      - -s -w -linkmode external -extldflags "-static"
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE
+      - README.md
+  - id: nix # Target nixpkgs
+    format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}-nix"
+    builds:
+      - setup-env-linux-musl # Only pack the musl build for nix
+
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - 'Merge pull request'
+      - 'Merge branch'
+
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
