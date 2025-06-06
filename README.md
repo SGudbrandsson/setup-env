@@ -13,9 +13,13 @@ This command-line application helps you set up your project's environment variab
 *   Automatically backs up an existing `.env` file to `.env.old` before writing new changes.
 *   Supports quoted values and basic escape sequences in `.env` and `.env.example` files.
 
+## Screenshots
+
+![Modifying an .env file](https://github.com/user-attachments/assets/acadd9cb-e446-4525-a600-0c7ce89062b3)
+
 ## Prerequisites
 
-*   Go (version 1.18 or higher recommended, due to generics usage in dependencies like `huh`).
+*   Go (version 1.18 or higher, due to generics usage in dependencies like `huh`).
 *   A `.env.example` file in the root directory of your project.
 
 ## How to Use
