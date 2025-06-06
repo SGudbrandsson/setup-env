@@ -8,7 +8,8 @@ before:
     # you may remove this if you don't need go generate
     # - go generate ./... # Removed for simplicity, add back if needed
 builds:
-  - main: ./main.go
+  - id: main-builds # Added id
+    main: ./main.go
     binary: setup-env
     env:
       - CGO_ENABLED=0
@@ -48,7 +49,10 @@ builds:
       - -s -w -linkmode external -extldflags "-static"
 
 archives:
-  - format: tar.gz
+  - id: default-archives # Added id for clarity, optional
+    builds: # Specify which builds to include
+      - main-builds
+    format: tar.gz
     # this name template makes the OS and Arch compatible with the results of `uname`.
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     files:
