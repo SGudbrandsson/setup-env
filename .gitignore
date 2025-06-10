@@ -1,3 +1,12 @@
+# Go general data
 src/go
+
+# Env files
 .env
+.env.old
+
+# Distribution binaries
 dist
+
+# Binary output
+setup-env
