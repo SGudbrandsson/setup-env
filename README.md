@@ -22,6 +22,15 @@ This command-line application helps you set up your project's environment variab
 *   Go (version 1.18 or higher, due to generics usage in dependencies like `huh`).
 *   A `.env.example` file in the root directory of your project.
 
+## Installation
+
+If you have `go` installed on your computer, you can just fetch the latest version like this:
+```bash
+go install github.com/SGudbrandsson/setup-env@latest
+```
+
+Alternatively, you can [download the binary for your platform in the releases area](https://github.com/SGudbrandsson/setup-env/releases)
+
 ## How to Use
 
 ### 1. Prepare `.env.example`
